@@ -9,7 +9,7 @@
         <button type="button" class="btn btn-primary my-3 me-3" data-bs-toggle="modal" data-bs-target="#create">
             Buat Kunjungan
         </button>
-        <a href="{{ route('fuel.index') }}" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#create">
+        <a href="{{ route('fuel.index') }}" class="btn btn-primary my-3">
             Download
         </a>
     </div>
@@ -73,10 +73,10 @@
                         <th>No</th>
                         <th>Nama</th>
                         <th>Tanggal Cek</th>
-                        <th>Bensin Sebelum</th>
+                        <th>Sisa Bensin Minggu Lalu</th>
                         <th>Sisa Bensin Sekarang</th>
-                        <th>Terpakai</th>
-                        <th>Jam Pakai</th>
+                        <th>enggunaan Bulan Lalu (Liter)</th>
+                        <th>Penggunaan Bulan Lalu (Jam)</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -116,10 +116,10 @@
                         <th>No</th>
                         <th>Nama</th>
                         <th>Tanggal Cek</th>
-                        <th>Sebelum</th>
-                        <th>Sesudah</th>
-                        <th>Terpakai</th>
-                        <th>Jam Pakai</th>
+                        <th>Sisa Bensin Minggu Lalu</th>
+                        <th>Sisa Bensin Sekarang</th>
+                        <th>enggunaan Bulan Lalu (Liter)</th>
+                        <th>Penggunaan Bulan Lalu (Jam)</th>
                         <th>Aksi</th>
                     </tr>
                 </tfoot>
