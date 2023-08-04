@@ -8,10 +8,7 @@
                 Menu
             </li>
             <li>
-                <a href="#" class="d-flex align-items-center"><span class="material-icons-two-tone me-2">history</span>History</a>
-            </li>
-            <li>
-                <a href="#"><i class="material-icons-two-tone">bookmark</i>Documentation</a>
+                <a href="#" class="d-flex align-items-center"><span class="active material-icons-two-tone me-2">history</span>History</a>
             </li>
         </ul>
     </div>
