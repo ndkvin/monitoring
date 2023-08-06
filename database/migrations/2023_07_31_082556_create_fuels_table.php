@@ -14,10 +14,8 @@ return new class extends Migration
         Schema::create('fuels', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->float('last');
-            $table->float('current');
+            $table->float('insert');
             $table->float('usage');
-            $table->float('usage_hour');
             $table->date('check_date');
             $table->timestamps();
         });

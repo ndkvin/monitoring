@@ -23,10 +23,9 @@ class CreateRequest extends FormRequest
     {
         return [
             'name' => 'required|string',
-            'usage_hour' => 'required|numeric',
-            'last' => 'required|numeric',
             'insert' => 'required|numeric',
             'check_date' => 'required|date',
+            'usage' => 'required|numeric'
         ];
     }
 }

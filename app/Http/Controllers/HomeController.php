@@ -12,9 +12,22 @@ class HomeController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
+    {    
+        $fuels = Fuel::orderBy('check_date', 'asc')->get();
+
+        $last = 0;
+        $isFirst = true;
+        foreach($fuels as $fuel) {
+            $fuel->usage_liter = $isFirst ? 0 : 80 + $fuel->usage*40;
+            $fuel->current = $last + $fuel->insert - $fuel->usage_liter;
+            $fuel->last = $last;
+
+            $last = $last + $fuel->insert - $fuel->usage_liter;
+            $isFirst = false;
+        }
+
         return view('pages.home', [
-            'fuels' => Fuel::orderBy('check_date', 'desc')->get(),
+            'fuels' => $fuels->reverse()->values()
         ]);
     }
 }

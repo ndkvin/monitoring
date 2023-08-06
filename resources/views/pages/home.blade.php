@@ -37,21 +37,15 @@
                         </div>
 
                         <div class="col-md-12 mt-2">
-                            <label for="usage_hour" class="form-label">Jam Pakai</label>
-                            <input type="number" step="0.01" class="form-control" id="usage_hour" name="usage_hour"
-                                placeholder="Jumlah Jam Pemakaian" required>
+                            <label for="usage" class="form-label">Total Jam Penggunaan</label>
+                            <input type="number" step="0.01" class="form-control" id="usage" name="usage"
+                                placeholder="Total Jam Penggunaan" required>
                         </div>
 
                         <div class="col-md-12 mt-2">
-                            <label for="last" class="form-label">Jumlah Bensin Sisa Minggu Lalu</label>
-                            <input type="number" step="0.01" class="form-control" id="last" name="last"
-                                placeholder="Jumlah Bensin Sisa Minggu Lalu" required>
-                        </div>
-
-                        <div class="col-md-12 mt-2">
-                            <label for="insert" class="form-label">Jumlah Bensin Yang Dimasukan</label>
+                            <label for="insert" class="form-label">Jumlah Solar Yang Dimasukan</label>
                             <input type="number" step="0.01" class="form-control" id="insert" name="insert"
-                                placeholder="Jumlah Bensin Yang Dimasukan" required>
+                                placeholder="Jumlah Solar Yang Dimasukan" required>
                         </div>
 
                         <input type="submit" id="createSubmit" class="d-none">
@@ -75,8 +69,8 @@
                         <th>Tanggal Cek</th>
                         <th>Sisa Bensin Minggu Lalu</th>
                         <th>Sisa Bensin Sekarang</th>
-                        <th>enggunaan Bulan Lalu (Liter)</th>
-                        <th>Penggunaan Bulan Lalu (Jam)</th>
+                        <th>Penggunaan Minggu Lalu (Liter)</th>
+                        <th>Penggunaan Minggu Lalu (Jam)</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -88,8 +82,8 @@
                             <td>{{ $fuel->check_date }}</td>
                             <td>{{ $fuel->last }} Liter</td>
                             <td>{{ $fuel->current }} Liter</td>
-                            <td>{{ $fuel->usage }} Liter</td>
-                            <td>{{ $fuel->usage_hour }} Jam</td>
+                            <td>{{ $fuel->usage_liter }} Liter</td>
+                            <td>{{ $fuel->usage }} Jam</td>
                             <td>
                                 <button type="button" class="btn btn-primary btn-burger btn-sm me-3 mt-1"
                                     data-bs-toggle="modal" data-bs-target="#edit" data-id="{{ $fuel->id }}">
@@ -97,12 +91,6 @@
                                         edit
                                     </span>
                                 </button>
-                                {{-- <button type="button" class="btn btn-danger btn-burger btn-sm me-3 mt-1"
-                                    data-bs-toggle="modal" data-bs-target="#delete" data-id="{{ $fuel->id }}">
-                                    <span class="material-symbols-outlined d-flex justify-content-center align-item-center">
-                                        delete
-                                    </span>
-                                </button> --}}
                             </td>
                         </tr>
                     @empty
@@ -118,8 +106,8 @@
                         <th>Tanggal Cek</th>
                         <th>Sisa Bensin Minggu Lalu</th>
                         <th>Sisa Bensin Sekarang</th>
-                        <th>enggunaan Bulan Lalu (Liter)</th>
-                        <th>Penggunaan Bulan Lalu (Jam)</th>
+                        <th>Penggunaan Minggu Lalu (Liter)</th>
+                        <th>Penggunaan Minggu Lalu (Jam)</th>
                         <th>Aksi</th>
                     </tr>
                 </tfoot>
@@ -152,21 +140,16 @@
                         </div>
 
                         <div class="col-md-12 mt-2">
-                            <label for="usage_hour" class="form-label">Jam Pakai</label>
-                            <input type="number" step="0.01" class="form-control" id="usage_hour" name="usage_hour"
-                                placeholder="Jumlah Jam Pemakaian" required>
+                            <label for="usage" class="form-label">Total Jam Penggunaan</label>
+                            <input type="number" step="0.01" class="form-control" id="usage" name="usage"
+                                placeholder="Total Jam Penggunaan" required>
                         </div>
 
-                        <div class="col-md-12 mt-2">
-                            <label for="last" class="form-label">Jumlah Bensin Sisa Minggu Lalu</label>
-                            <input type="number" step="0.01" class="form-control" id="last" name="last"
-                                placeholder="Jumlah Bensin Sisa Minggu Lalu" required>
-                        </div>
 
                         <div class="col-md-12 mt-2">
-                            <label for="insert" class="form-label">Jumlah Bensin Liter Dimasukan</label>
+                            <label for="insert" class="form-label">Jumlah Solar Liter Dimasukan</label>
                             <input type="number" step="0.01" class="form-control" id="insert" name="insert"
-                                placeholder="Jumlah Bensin Yang Dimasukan" required>
+                                placeholder="Jumlah Solar Yang Dimasukan" required>
                         </div>
 
                         <input type="submit" id="editSubmit" class="d-none">
@@ -179,29 +162,6 @@
             </div>
         </div>
     </div>
-
-    {{-- <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Delete Cashier</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Are you sure to delete <span id="cashierName"></span>?
-                    <form action="/admin/manager/id" method="POST" id="formCreate">
-                        @method('DELETE')
-                        @csrf
-                        <input type="submit" id="deleteSubmit" class="d-none">
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" onclick="submitDelete()">Yes</button>
-                </div>
-            </div>
-        </div>
-    </div> --}}
 @endsection
 
 @section('scripts')
@@ -233,10 +193,9 @@
                 console.log(response)
                 $(e.currentTarget).find('form[action="/fuel/id"]').attr('action', `/fuel/${id}`);
                 $(e.currentTarget).find('input[name="name"]').val(response.name);
-                $(e.currentTarget).find('input[name="usage_hour"]').val(response.usage_hour);
                 $(e.currentTarget).find('input[name="check_date"]').val(response.check_date);
-                $(e.currentTarget).find('input[name="last"]').val(response.last);
-                $(e.currentTarget).find('input[name="insert"]').val(response.current - response.last);
+                $(e.currentTarget).find('input[name="insert"]').val(response.insert);
+                $(e.currentTarget).find('input[name="usage"]').val(response.usage);
             });
         });
     </script>

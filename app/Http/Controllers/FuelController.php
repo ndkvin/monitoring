@@ -35,18 +35,12 @@ class FuelController extends Controller
      */
     public function store(CreateRequest $request)
     {
-        $last = Fuel::orderBy('check_date', 'desc')->first();
-
-        $last_fuel = $last ? $last->current : 0;
-
         $request = $request->all();
 
-        $fuel = Fuel::create([
+        Fuel::create([
             'name' => $request['name'],
-            'usage_hour' => $request['usage_hour'],
-            'usage' => $last_fuel == 0 ? 0  : $last_fuel - $request['last'],
-            'last' => $request['last'],
-            'current' =>  $request['last']+$request['insert'],
+            'insert' => $request['insert'],
+            'usage' => $request['usage'],
             'check_date' => $request['check_date'],
         ]);
 
@@ -74,18 +68,12 @@ class FuelController extends Controller
      */
     public function update(CreateRequest $request, Fuel $fuel)
     {
-        $last = Fuel::orderBy('check_date', 'desc')->first();
-
-        $last_fuel = $last ? $last->current : 0;
-
         $request = $request->all();
 
         $fuel->update([
             'name' => $request['name'],
-            'usage_hour' => $request['usage_hour'],
-            'usage' => $last_fuel == 0 ? 0  : $last_fuel - $request['last'],
-            'last' => $request['last'],
-            'current' =>  $request['last']+$request['insert'],
+            'insert' => $request['insert'],
+            'usage' => $request['usage'],
             'check_date' => $request['check_date'],
         ]);
 
