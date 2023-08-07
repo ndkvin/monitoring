@@ -9,9 +9,9 @@
         <button type="button" class="btn btn-primary my-3 me-3" data-bs-toggle="modal" data-bs-target="#create">
             Buat Kunjungan
         </button>
-        <a href="{{ route('fuel.index') }}" class="btn btn-primary my-3">
-            Download
-        </a>
+        <button type="button" class="btn btn-primary my-3 me-3" data-bs-toggle="modal" data-bs-target="#download">
+            Export Data
+        </button>
     </div>
     <!-- create modal -->
     <div class="modal fade" id="create" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -58,14 +58,39 @@
             </div>
         </div>
     </div>
-
+    <!-- export -->
+    <div class="modal fade" id="download" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Export Data</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('export') }}" method="POST" id="formDownload" enctype="multipart/form-data">
+                        @csrf
+                        <div class="col-md-12 mt-2">
+                            <label for="check_date" class="form-label">Bulan</label>
+                            <input class="form-control flatpickr2" id="month" class="check_date" type="text"
+                                name="month" placeholder="Select Month" required>
+                        </div>
+                        <input type="submit" id="downloadSubmit" class="d-none">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="download()">Download</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="card">
         <div class="card-body">
             <table id="datatable4" class="display" style="width:100%">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Nama</th>
+                        <th>Anggota</th>
                         <th>Tanggal Cek</th>
                         <th>Sisa Bensin Minggu Lalu</th>
                         <th>Sisa Bensin Sekarang</th>
@@ -87,8 +112,17 @@
                             <td>
                                 <button type="button" class="btn btn-primary btn-burger btn-sm me-3 mt-1"
                                     data-bs-toggle="modal" data-bs-target="#edit" data-id="{{ $fuel->id }}">
-                                    <span class="material-symbols-outlined d-flex justify-content-center align-item-center">
+                                    <span
+                                        class="material-symbols-outlined d-flex justify-content-center align-item-center">
                                         edit
+                                    </span>
+                                </button>
+
+                                <button type="button" class="btn btn-danger btn-burger btn-sm me-3"
+                                    data-bs-toggle="modal" data-bs-target="#delete"
+                                    data-id="{{ $fuel->id }}">
+                                    <span class="material-symbols-outlined d-flex justify-content-center align-item-center">
+                                        delete
                                     </span>
                                 </button>
                             </td>
@@ -102,7 +136,7 @@
                 <tfoot>
                     <tr>
                         <th>No</th>
-                        <th>Nama</th>
+                        <th>Anggota</th>
                         <th>Tanggal Cek</th>
                         <th>Sisa Bensin Minggu Lalu</th>
                         <th>Sisa Bensin Sekarang</th>
@@ -162,6 +196,30 @@
             </div>
         </div>
     </div>
+
+    <!-- delete modal -->
+    <div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Cashier</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure to delete <span id="tanggal"></span>?
+                    <form action="/fuel/id" method="POST" id="formCreate">
+                        @method('DELETE')
+                        @csrf
+                        <input type="submit" id="deleteSubmit" class="d-none">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="submitDelete()">Yes</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('scripts')
@@ -173,6 +231,14 @@
         $("#dateEdit").flatpickr({
             dateFormat: "Y-m-d",
         });
+
+        $("#month").flatpickr({
+            dateFormat: "Y-m",
+        });
+
+        function download() {
+            $('#downloadSubmit').click();
+        }
 
         function submitCreate() {
             $('#createSubmit').click();
@@ -196,6 +262,18 @@
                 $(e.currentTarget).find('input[name="check_date"]').val(response.check_date);
                 $(e.currentTarget).find('input[name="insert"]').val(response.insert);
                 $(e.currentTarget).find('input[name="usage"]').val(response.usage);
+            });
+        });
+
+        $('#delete').on('show.bs.modal', function(e) {
+            var id = $(e.relatedTarget).data('id');
+            let url = `/fuel/${id}`;
+            console.log(url)
+            $.get(url, function(response) {
+                console.log(response)
+                $(e.currentTarget).find('form[action="/fuel/id"]').attr('action',
+                    `/fuel/${id}`);
+                $('#tanggal').text(response.check_date);
             });
         });
     </script>

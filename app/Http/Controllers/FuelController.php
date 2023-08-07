@@ -15,11 +15,7 @@ class FuelController extends Controller
      */
     public function index()
     {
-        // curent timestamps
-        $current = date('Y-m-d');
-        $file_name = 'fuel_' . $current . '.xlsx';
-        
-        return Excel::download(new FuelExport, $file_name);
+        // 
     }
 
     /**
@@ -83,8 +79,10 @@ class FuelController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Fuel $fuel)
     {
-        //
+        $fuel->delete();
+
+        return redirect()->route('home')->with('success', 'Data berhasil dihapus');
     }
 }

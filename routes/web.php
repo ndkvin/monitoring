@@ -14,4 +14,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::resource('fuel', App\Http\Controllers\FuelController::class)->except(['destroy', 'edit', 'create']);
+Route::post('/export', [App\Http\Controllers\HomeController::class, 'export'])->name('export');
+Route::resource('fuel', App\Http\Controllers\FuelController::class)->except(['index','edit', 'create']);
