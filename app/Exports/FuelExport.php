@@ -36,19 +36,13 @@ class FuelExport implements FromCollection, WithHeadings, WithStrictNullComparis
      */
     public function collection()
     {
-
         $carbonDate = Carbon::createFromFormat('Y-m', $this->month);
 
         $month = $carbonDate->format('m');
         $year = $carbonDate->format('Y');
 
-        // Get the first and last day of the month using Carbon
-        $firstDayOfMonth = Carbon::createFromDate($year, $month, 1)->startOfDay();
-        $lastDayOfMonth = Carbon::createFromDate($year, $month, 1)->lastOfMonth()->endOfDay();
-
-        $fuels = Fuel::select('check_date', 'name', 'insert', 'usage')
-            ->whereBetween('check_date', [$firstDayOfMonth, $lastDayOfMonth])
-            ->orderBy('check_date', 'asc')->get();
+        $start = Carbon::createFromDate($year, $month, 1)->firstOfMonth()->toDateString();
+        $end = Carbon::createFromDate($year, $month, 1)->lastOfMonth()->toDateString();
 
         $fuels = Fuel::select('check_date', 'name', 'insert', 'usage')
                 ->orderBy('check_date', 'asc')->get();
@@ -65,12 +59,11 @@ class FuelExport implements FromCollection, WithHeadings, WithStrictNullComparis
             $isFirst = false;
         }
 
-        $filteredFuels = $fuels->filter(function ($value) use ($firstDayOfMonth, $lastDayOfMonth) {
-            return $value->check_date >= $firstDayOfMonth && $value->check_date <= $lastDayOfMonth;
+        $filteredFuels = $fuels->filter(function ($value) use ($start, $end) {
+            return $value->check_date >= $start && $value->check_date <= $end;
         });
     
         $totalUsageLiter = $filteredFuels->sum('usage_liter');
-
 
         $filteredFuels->push((object)[
             '' => 'Total Penggunaan',

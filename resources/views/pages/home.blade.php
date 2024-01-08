@@ -6,15 +6,20 @@
     </div>
     <!-- Button trigger modal -->
     <div class="d-flex">
+        <button type="button" class="btn btn-primary my-3 me-3" data-bs-toggle="modal" data-bs-target="#tanggal">
+            Tanggal
+        </button>
+    </div>
+    <div class="d-flex">
         <button type="button" class="btn btn-primary my-3 me-3" data-bs-toggle="modal" data-bs-target="#create">
             Buat Kunjungan
         </button>
         <button type="button" class="btn btn-primary my-3 me-3" data-bs-toggle="modal" data-bs-target="#download">
-            Export Data
+            Export Data Bulanan
         </button>
         <button type="button" class="btn btn-primary my-3 me-3" data-bs-toggle="modal"
             data-bs-target="#year-download-modal">
-            Export Data
+            Export Data Tahunan
         </button>
     </div>
     <!-- create modal -->
@@ -58,6 +63,32 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" onclick="submitCreate()">Create</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- date modal -->
+    <div class="modal fade" id="tanggal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Export Data</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('home') }}" method="get" id="formDownload" enctype="multipart/form-data">
+
+                        <div class="col-md-12 mt-2">
+                            <label for="check_date" class="form-label">Bulan</label>
+                            <input class="form-control flatpickr2" id="tgl" class="check_date" type="text"
+                                name="month" placeholder="Select Month" required>
+                        </div>
+                        <input type="submit" id="submitTanggal" class="d-none">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="submitTanggal()">Ok</button>
                 </div>
             </div>
         </div>
@@ -254,6 +285,10 @@
 
 @section('scripts')
     <script>
+        $("#tgl").flatpickr({
+            dateFormat: "Y-m",
+        });
+
         $("#date").flatpickr({
             dateFormat: "Y-m-d",
         });
@@ -270,16 +305,20 @@
             dateFormat: "Y",
         });
 
+        function submitCreate() {
+            $('#createSubmit').click();
+        }
+
+        function submitTanggal() {
+            $('#submitTanggal').click();
+        }
+
         function download() {
             $('#downloadSubmit').click();
         }
 
         function yearDownload() {
             $('#year-submit').click();
-        }
-
-        function submitCreate() {
-            $('#createSubmit').click();
         }
 
         function submitEdit() {

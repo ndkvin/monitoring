@@ -7,8 +7,8 @@ use App\Exports\FuelYearlyExport;
 use App\Http\Requests\ExportRequest;
 use App\Http\Requests\ExportYearRequest;
 use Illuminate\Http\Request;
-use App\Http\Requests\Fuel\CreateRequest;
 use App\Models\Fuel;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 
 class HomeController extends Controller
@@ -16,9 +16,13 @@ class HomeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $fuels = Fuel::orderBy('check_date', 'asc')->get();
+        $start = '';
+        $end = '';
+        $fuels = Fuel::select('check_date', 'name', 'insert', 'usage')
+            ->orderBy('check_date', 'asc')->get();
+
 
         $last = 0;
         $isFirst = true;
@@ -29,6 +33,22 @@ class HomeController extends Controller
 
             $last = $last + $fuel->insert - $fuel->usage_liter;
             $isFirst = false;
+        }
+
+        if ($request->get('month')) {
+            $month = $request->get('month');
+            $carbonDate = Carbon::createFromFormat('Y-m', $month);
+
+            $month = $carbonDate->format('m');
+            $year = $carbonDate->format('Y');
+
+            $start = Carbon::createFromDate($year, $month, 1)->firstOfMonth()->toDateString();
+            $end = Carbon::createFromDate($year, $month, 1)->lastOfMonth()->toDateString();
+
+            $fuels = $fuels->filter(function ($value) use ($start, $end) {
+                return $value->check_date >= $start && $value->check_date <= $end;
+            });
+
         }
 
         return view('pages.home', [
